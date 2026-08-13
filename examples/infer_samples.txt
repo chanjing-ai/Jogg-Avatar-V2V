@@ -1,0 +1,3 @@
+# prompt@@source_video@@driving_audio
+A person speaking naturally to the camera@@/path/to/source.mp4@@/path/to/driving.wav
+

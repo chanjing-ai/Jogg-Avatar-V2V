@@ -1,0 +1,38 @@
+.venv/
+*.egg-info/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.idea/
+.vscode/
+
+# Models and generated artifacts belong in Hugging Face or local storage.
+/models/
+/demo_out/
+/outputs/
+/lightning_logs/
+*.ckpt
+*.pth
+*.pt
+*.bin
+*.safetensors
+*.onnx
+*.tensors.vae2.2.pth
+
+# Local media and datasets may contain personal or licensed material.
+/data/
+/datasets/
+/runtime/
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wav
+*.mp3
+
+# Secrets and machine-local configuration.
+.env
+.env.*
+!.env.example
+*.log
+

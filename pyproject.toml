@@ -1,0 +1,69 @@
+[project]
+name = "jogg-avatar-v2v"
+version = "0.1.0"
+description = "Audio-driven video-to-video avatar generation based on Wan2.2-TI2V-5B"
+readme = "README.md"
+requires-python = "==3.13.*"
+license = { file = "LICENSE" }
+authors = [{ name = "Jogg-Avatar contributors" }]
+dependencies = [
+    "einops==0.8.1",
+    "ftfy==6.3.1",
+    "imageio[ffmpeg]>=2.37.2,<3",
+    "librosa==0.10.2",
+    "numpy==2.2.6",
+    "nvidia-cublas-cu12==12.8.4.1",
+    "nvidia-cudnn-cu12==9.10.2.21",
+    "nvidia-curand-cu12==10.3.9.90",
+    "opencv-python>=4.13.0.90,<5",
+    "peft==0.18.1",
+    "pillow>=10,<13",
+    "protobuf>=5,<7",
+    "pyyaml>=6,<7",
+    "safetensors>=0.7,<0.8",
+    "scipy==1.15.3",
+    "sentencepiece>=0.2,<0.3",
+    "soundfile>=0.13,<0.14",
+    "torch==2.8.0",
+    "torchaudio==2.8.0",
+    "torchvision==0.23.0",
+    "tqdm>=4.67,<5",
+    "transformers==4.57.6",
+    "typing-extensions>=4.12,<5",
+    "xfuser==0.4.5",
+]
+
+[project.optional-dependencies]
+train = [
+    "lightning==2.6.5",
+    "pandas==3.0.5",
+]
+inference = ["onnxruntime-gpu>=1.24.1,<2"]
+test = ["pytest>=8.4,<9"]
+build = ["ninja>=1.13,<2"]
+
+[tool.uv]
+index-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+torchaudio = { index = "pytorch-cu128" }
+nvidia-cudnn-cu12 = { index = "pytorch-cu128" }
+nvidia-cublas-cu12 = { index = "pytorch-cu128" }
+nvidia-curand-cu12 = { index = "pytorch-cu128" }
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["Avatar*"]
+namespaces = true
+
+[build-system]
+requires = ["setuptools>=80,<81"]
+build-backend = "setuptools.build_meta"
+
