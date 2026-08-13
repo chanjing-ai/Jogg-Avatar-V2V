@@ -1,18 +1,27 @@
 import os
+import shutil
 import subprocess
 
+
 def add_silence_to_audio_ffmpeg(audio_path, tmp_audio_path, silence_duration_s=0.5):
-    # 使用 ffmpeg 命令在音频前加上静音
+    silence_duration_s = float(silence_duration_s)
+    if silence_duration_s < 0:
+        raise ValueError("silence_duration_s must be non-negative")
+    os.makedirs(os.path.dirname(os.path.abspath(tmp_audio_path)), exist_ok=True)
+    if silence_duration_s == 0:
+        if os.path.abspath(audio_path) != os.path.abspath(tmp_audio_path):
+            shutil.copy2(audio_path, tmp_audio_path)
+        return tmp_audio_path
+
+    delay_ms = round(silence_duration_s * 1000)
     command = [
-        'ffmpeg', 
-        '-i', audio_path,  # 输入音频文件路径
-        '-f', 'lavfi',  # 使用 lavfi 虚拟输入设备生成静音
-        '-t', str(silence_duration_s),  # 静音时长，单位秒
-        '-i', 'anullsrc=r=16000:cl=stereo',  # 创建静音片段（假设音频为 stereo，采样率 44100）
-        '-filter_complex', '[1][0]concat=n=2:v=0:a=1[out]',  # 合并静音和原音频
-        '-map', '[out]',  # 输出合并后的音频
-        '-y', tmp_audio_path,  # 输出文件路径
-        '-loglevel', 'quiet'
+        "ffmpeg",
+        "-v", "error",
+        "-y",
+        "-i", audio_path,
+        "-af", f"adelay={delay_ms}:all=1",
+        tmp_audio_path,
     ]
-    
+
     subprocess.run(command, check=True)
+    return tmp_audio_path

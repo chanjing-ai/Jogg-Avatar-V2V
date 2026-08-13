@@ -685,7 +685,12 @@ def main():
         prompt_path = os.path.join(prompt_dir, f"prompt_{idx:03d}.txt")
         if dist.get_rank() == 0:
             if audio_path and args.use_audio:
-                add_silence_to_audio_ffmpeg(audio_path, tmp2_audio_path, args.silence_duration_s)
+                if args.silence_duration_s > 0:
+                    add_silence_to_audio_ffmpeg(
+                        audio_path, tmp2_audio_path, args.silence_duration_s
+                    )
+                else:
+                    tmp2_audio_path = audio_path
             result_prefix = getattr(args, "result_prefix", None)
             if result_prefix is None:
                 result_prefix = f'result_{idx:03d}'
