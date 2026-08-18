@@ -4,7 +4,8 @@
 
 Jogg-Avatar V2V 是一个基于
 [Wan2.2-TI2V-5B](https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B) 的音频驱动数字人
-视频生成模型。输入源视频与驱动音频后，模型保留原视频中的身体、镜头和背景运动，
+视频生成模型。[Jogg-Avatar V2V 权重](https://huggingface.co/cicada-ai/Jogg-Avatar-V2V)
+已发布在 Hugging Face。输入源视频与驱动音频后，模型保留原视频中的身体、镜头和背景运动，
 并重新生成与音频同步的人脸区域。
 
 本仓库只包含 Wan2.2 5B V2V 的训练、预处理与推理代码，不包含原有 14B I2V 流程。
@@ -41,6 +42,13 @@ uv run hf download facebook/wav2vec2-base-960h \
   --local-dir models/wav2vec2-base-960h
 uv run hf download cicada-ai/Jogg-Avatar-V2V \
   --local-dir models/Jogg-Avatar-Wan2.2-5B
+
+# 从 InsightFace 官方模型发布页下载人脸检测模型
+curl -L https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_sc.zip \
+  -o /tmp/buffalo_sc.zip
+unzip -j /tmp/buffalo_sc.zip det_500m.onnx -d models/scrfd_crop_face
+mv models/scrfd_crop_face/det_500m.onnx \
+  models/scrfd_crop_face/scrfd_500m_bnkps.onnx
 ```
 
 默认目录结构如下：
@@ -62,7 +70,7 @@ models/
 ```
 
 可通过环境变量 `JOGG_AVATAR_MODEL_DIR` 修改模型根目录。SCRFD ONNX 只用于生成人脸框
-元数据，不随本仓库发布。
+元数据，来源为上面链接的 InsightFace 官方模型发布包。
 
 ## 推理
 
@@ -148,20 +156,6 @@ uv run python script/export_checkpoint.py \
   outputs/train/lightning_logs/version_0/checkpoints/epoch=0-step=1000.ckpt \
   outputs/Jogg-Avatar-Wan2.2-5B
 ```
-
-## 模型发布
-
-新建 Hugging Face 模型仓库，将 `huggingface/README.md` 复制为导出模型目录中的
-`README.md`，然后上传整个目录：
-
-```bash
-cp huggingface/README.md outputs/Jogg-Avatar-Wan2.2-5B/README.md
-uv run hf upload cicada-ai/Jogg-Avatar-V2V \
-  outputs/Jogg-Avatar-Wan2.2-5B .
-```
-
-不要将 checkpoint、私有媒体、数据集清单、机器绝对路径、日志、令牌或 VAE 缓存提交到
-Git 仓库。完整发布检查项见 `SECURITY.md`。
 
 ## 致谢
 

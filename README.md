@@ -3,7 +3,9 @@
 [English](README.md) | [简体中文](README_zh.md)
 
 Jogg-Avatar V2V is an audio-driven avatar video generation model based on
-[Wan2.2-TI2V-5B](https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B). Given a source
+[Wan2.2-TI2V-5B](https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B). The
+[Jogg-Avatar V2V checkpoint](https://huggingface.co/cicada-ai/Jogg-Avatar-V2V)
+is available on Hugging Face. Given a source
 video and a driving audio track, it preserves body, camera, and background
 motion while regenerating the face region with synchronized speech.
 
@@ -47,6 +49,13 @@ uv run hf download facebook/wav2vec2-base-960h \
   --local-dir models/wav2vec2-base-960h
 uv run hf download cicada-ai/Jogg-Avatar-V2V \
   --local-dir models/Jogg-Avatar-Wan2.2-5B
+
+# Face detector from the official InsightFace model release
+curl -L https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_sc.zip \
+  -o /tmp/buffalo_sc.zip
+unzip -j /tmp/buffalo_sc.zip det_500m.onnx -d models/scrfd_crop_face
+mv models/scrfd_crop_face/det_500m.onnx \
+  models/scrfd_crop_face/scrfd_500m_bnkps.onnx
 ```
 
 The default config expects:
@@ -68,7 +77,8 @@ models/
 ```
 
 Set `JOGG_AVATAR_MODEL_DIR` to use another model root. The SCRFD ONNX detector
-is used only to create face-box metadata and is not included in this repository.
+is used only to create face-box metadata and comes from the official InsightFace
+model release linked above.
 
 ## Inference
 
@@ -161,21 +171,6 @@ uv run python script/export_checkpoint.py \
   outputs/train/lightning_logs/version_0/checkpoints/epoch=0-step=1000.ckpt \
   outputs/Jogg-Avatar-Wan2.2-5B
 ```
-
-## Model Release
-
-Create a Hugging Face model repository. Copy `huggingface/README.md` into the
-exported model directory as `README.md`, then upload the complete directory:
-
-```bash
-cp huggingface/README.md outputs/Jogg-Avatar-Wan2.2-5B/README.md
-uv run hf upload cicada-ai/Jogg-Avatar-V2V \
-  outputs/Jogg-Avatar-Wan2.2-5B .
-```
-
-Do not commit checkpoints, private media, dataset manifests, absolute machine
-paths, logs, tokens, or generated VAE caches to the Git repository. See
-`SECURITY.md` for the release checklist.
 
 ## Acknowledgments
 

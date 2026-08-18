@@ -1,13 +1,13 @@
-# Security and Release Checklist
+# Security Policy
 
-Before publishing a Git or Hugging Face revision:
+## Supported Versions
 
-1. Review `git status` and the complete staged diff.
-2. Run `rg` for tokens, credentials, private hosts, email addresses, and absolute paths.
-3. Do not publish training manifests, source media, voices, face metadata, logs, or caches without explicit rights and consent.
-4. Keep model weights out of GitHub. Upload only the reviewed `config.json`, model card, and exported safetensors to Hugging Face.
-5. Inspect safetensors metadata and tensor keys. Do not upload pickle-based checkpoints from untrusted sources.
-6. Verify the licenses and acceptable-use terms of the base model, detector, datasets, and third-party code.
+Security updates are applied to the latest version on the `main` branch.
 
-Report security issues privately to the repository maintainers rather than opening a public issue.
+## Reporting a Vulnerability
 
+Please use
+[GitHub private vulnerability reporting](https://github.com/chanjing-ai/Jogg-Avatar-V2V/security/advisories/new)
+to report a security issue. Include the affected version, reproduction steps,
+and expected impact. Please do not open a public issue for an undisclosed
+vulnerability.

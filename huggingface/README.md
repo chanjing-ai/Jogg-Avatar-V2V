@@ -16,6 +16,9 @@ Jogg-Avatar V2V is an audio-driven video-to-video avatar model based on
 Wan2.2-TI2V-5B. It preserves the source video's body, camera, and background
 motion while regenerating the face region to follow a driving audio track.
 
+Training and inference code is available at
+[chanjing-ai/Jogg-Avatar-V2V](https://github.com/chanjing-ai/Jogg-Avatar-V2V).
+
 Use these weights with the Jogg-Avatar-V2V code repository. The model directory
 must contain:
 
@@ -28,4 +31,3 @@ Jogg-Avatar-Wan2.2-5B/
 The Wan2.2 base model and `facebook/wav2vec2-base-960h` are required separately.
 Review their licenses and terms before use. Users are responsible for obtaining
 consent for source videos and voices and for clearly disclosing synthetic media.
-
