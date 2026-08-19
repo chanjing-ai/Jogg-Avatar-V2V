@@ -40,6 +40,7 @@ from Avatar.utils.video_preprocess import (
     preprocess_video_to_vae_features,
 )
 from Avatar.utils.inference_validation import validate_job, validate_runtime_config
+from Avatar.utils.prompts import DEFAULT_PROMPT, resolve_prompt
 
 
 def set_seed(seed: int = 42):
@@ -595,8 +596,11 @@ def _input_jobs():
             raise FileNotFoundError(f"Prompt file not found: {args.input_file}")
         lines = read_from_file(args.input_file)
         input_name = os.path.splitext(os.path.basename(args.input_file))[0]
+    elif args.video_path:
+        lines = [DEFAULT_PROMPT]
+        input_name = "prompt"
     else:
-        raise ValueError("Provide --prompt or --input_file.")
+        raise ValueError("Provide --video_path, --prompt, or --input_file.")
 
     jobs = []
     video_exts = (".mp4", ".avi", ".mov", ".mkv")
@@ -607,7 +611,7 @@ def _input_jobs():
         fields = line.split("@@")
         if len(fields) > 3:
             raise ValueError("Each input line must use prompt@@video@@audio format.")
-        prompt = fields[0]
+        prompt = resolve_prompt(fields[0])
         video_path = args.video_path
         if not video_path and len(fields) >= 2 and fields[1].lower().endswith(video_exts):
             video_path = fields[1]

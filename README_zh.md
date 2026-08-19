@@ -87,7 +87,6 @@ uv run python script/extract_mouth_info.py \
 ```bash
 uv run python script/inference_wan2_2_v2v.py \
   --config configs/inference_5B.yaml \
-  --prompt "一个人自然地面对镜头说话" \
   --video_path /path/to/source.mp4 \
   --audio_path /path/to/driving.wav \
   --validate_only
@@ -99,11 +98,14 @@ uv run python script/inference_wan2_2_v2v.py \
 CUDA_VISIBLE_DEVICES=0 uv run torchrun --standalone --nproc_per_node=1 \
   script/inference_wan2_2_v2v.py \
   --config configs/inference_5B.yaml \
-  --prompt "一个人自然地面对镜头说话" \
   --video_path /path/to/source.mp4 \
   --audio_path /path/to/driving.wav \
   --output_dir demo_out/example
 ```
+
+未传入 `--prompt` 时，推理会自动使用与训练一致的固定提示词：
+`A realistic video of a face speaking directly to the camera. The camera remains
+steady and every facial detail is sharp and clearly visible.`
 
 批量推理使用 `--input_file examples/infer_samples.txt`，每个有效行的格式为
 `提示词@@源视频@@驱动音频`。当音频长于源视频时，源视频帧与 reference latent 都会使用

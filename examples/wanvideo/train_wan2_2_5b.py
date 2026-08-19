@@ -24,13 +24,10 @@ from Avatar.models.model_manager import ModelManager
 from Avatar.models.vae2_2 import Wan2_2_VAE
 from Avatar.models.wav2vec import Wav2VecModel
 from Avatar.utils.io_utils import load_state_dict
+from Avatar.utils.prompts import DEFAULT_PROMPT, resolve_prompt
 from Avatar.wan_video import WanVideoPipeline
 
 
-DEFAULT_PROMPT = (
-    "A realistic video of a face speaking directly to the camera. The camera "
-    "remains steady and every facial detail is sharp and clearly visible."
-)
 FEATURE_SUFFIX = ".tensors.vae2.2.pth"
 REQUIRED_FEATURE_KEYS = {
     "image_lat",
@@ -97,9 +94,7 @@ class VideoFeatureDataset(torch.utils.data.Dataset):
             feature_path = Path(f"{path}{FEATURE_SUFFIX}")
             if feature_path.exists() and not overwrite:
                 continue
-            prompt = str(row.get("text", DEFAULT_PROMPT))
-            if not prompt or prompt.lower() == "nan":
-                prompt = DEFAULT_PROMPT
+            prompt = resolve_prompt(row.get("text", DEFAULT_PROMPT))
             self.samples.append((path, prompt))
 
         self.clip_frames = clip_frames

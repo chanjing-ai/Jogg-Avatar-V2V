@@ -15,10 +15,17 @@ from Avatar.utils.inference_validation import (
     validate_runtime_config,
 )
 from Avatar.utils.io_utils import loop_video_index
+from Avatar.utils.prompts import DEFAULT_PROMPT, resolve_prompt
 from script.export_checkpoint import normalize_state_dict
 
 
 class ReleaseSmokeTest(unittest.TestCase):
+    def test_training_prompt_is_the_default_for_missing_text(self):
+        self.assertEqual(resolve_prompt(None), DEFAULT_PROMPT)
+        self.assertEqual(resolve_prompt(""), DEFAULT_PROMPT)
+        self.assertEqual(resolve_prompt("nan"), DEFAULT_PROMPT)
+        self.assertEqual(resolve_prompt("custom prompt"), "custom prompt")
+
     def test_config_placeholders_support_environment_defaults(self):
         config = {
             "model_dir": "${JOGG_AVATAR_MODEL_DIR:-models}",
@@ -100,4 +107,3 @@ class ReleaseSmokeTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

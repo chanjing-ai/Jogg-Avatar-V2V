@@ -96,7 +96,6 @@ Validate all inputs and model paths without loading the 5B model:
 ```bash
 uv run python script/inference_wan2_2_v2v.py \
   --config configs/inference_5B.yaml \
-  --prompt "A person speaking naturally to the camera" \
   --video_path /path/to/source.mp4 \
   --audio_path /path/to/driving.wav \
   --validate_only
@@ -109,11 +108,14 @@ run and reused afterward:
 CUDA_VISIBLE_DEVICES=0 uv run torchrun --standalone --nproc_per_node=1 \
   script/inference_wan2_2_v2v.py \
   --config configs/inference_5B.yaml \
-  --prompt "A person speaking naturally to the camera" \
   --video_path /path/to/source.mp4 \
   --audio_path /path/to/driving.wav \
   --output_dir demo_out/example
 ```
+
+When `--prompt` is omitted, inference uses the same fixed prompt as training:
+`A realistic video of a face speaking directly to the camera. The camera remains
+steady and every facial detail is sharp and clearly visible.`
 
 For batch inference, use `--input_file examples/infer_samples.txt`. Each
 non-comment line has the format `prompt@@source_video@@driving_audio`. When the

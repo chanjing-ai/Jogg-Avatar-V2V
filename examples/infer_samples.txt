@@ -1,3 +1,2 @@
 # prompt@@source_video@@driving_audio
-A person speaking naturally to the camera@@/path/to/source.mp4@@/path/to/driving.wav
-
+A realistic video of a face speaking directly to the camera. The camera remains steady and every facial detail is sharp and clearly visible.@@/path/to/source.mp4@@/path/to/driving.wav

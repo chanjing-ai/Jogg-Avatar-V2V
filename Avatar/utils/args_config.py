@@ -45,7 +45,12 @@ def parse_args():
     # 定义 argparse 参数
     parser.add_argument("--exp_path", type=str, help="Path to save the model.")
     parser.add_argument("--input_file", type=str, help="Batch file using prompt@@media@@audio on each line.")
-    parser.add_argument("--prompt", type=str, default=None, help="Prompt for one inference job.")
+    parser.add_argument(
+        "--prompt",
+        type=str,
+        default=None,
+        help="Prompt for one inference job; defaults to the training prompt.",
+    )
     parser.add_argument("--image_path", type=str, default=None, help="Reference image for 14B image-to-video inference.")
     parser.add_argument("--video_path", type=str, default=None, help="Source video; overrides the path in --input_file.")
     parser.add_argument("--audio_path", type=str, default=None, help="Driving audio; overrides the path in --input_file.")
